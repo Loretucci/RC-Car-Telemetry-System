@@ -37,13 +37,8 @@ To ensure robustness against noise and transmission errors, a custom binary pack
 ## Technologies Used
 * **MATLAB & Simulink (R2022b)**
 * **Simulink Support Package for Arduino Hardware**
-* **C/C++** (Embedded firmware for Teensy)
 * **Hardware:** Teensy 4.0, Arduino Mega 2560
-
-## Repository Structure
-* `Simulink_Model/`: Contains the `.slx` files for the receiver and data processing.
-* `Docs/`: Documentation and wiring diagrams.
-
+* 
 ## Results
 The system was stress-tested by simulating transmission interruptions and noise. The implemented checksum algorithm successfully identified 100% of corrupted packets, ensuring that only valid telemetry data was plotted in the Simulink scope.
 
