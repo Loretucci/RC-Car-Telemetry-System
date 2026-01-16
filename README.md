@@ -42,7 +42,6 @@ To ensure robustness against noise and transmission errors, a custom binary pack
 
 ## Repository Structure
 * `Simulink_Model/`: Contains the `.slx` files for the receiver and data processing.
-* `Teensy_Firmware/`: C++ code for sensor acquisition and UART transmission.
 * `Docs/`: Documentation and wiring diagrams.
 
 ## Results
