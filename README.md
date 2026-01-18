@@ -4,15 +4,15 @@ Designed and implemented a serial telemetry interface for a 1:8 scale autonomous
 # Autonomous Rover Telemetry System
 
 ## Project Overview
-This repository contains the software and Simulink models developed for my **Bachelor's Thesis** in *Electronics and Telecommunications Engineering* at the University of Florence.
+This repository contains my **Bachelor's Thesis** in *Electronics and Telecommunications Engineering* at the University of Florence.
 
-The project focuses on designing and testing a robust **real-time telemetry system** for a 1:10 scale autonomous RC car. The system enables reliable data transmission from the vehicle's onboard computer to a ground station for analysis, visualization, and closed-loop control.
+The project focuses on designing and testing a robust **real-time telemetry system** for a 1:8 scale autonomous RC car. The system enables reliable data transmission from the vehicle's onboard Teensy to an Arduino Mega for analysis and closed-loop control. The Arduino board receives all sensor data from the Teensy and transmits back specific control commands for the throttle and steering actuators. 
 
 ## Objectives
 * **Data Acquisition:** Reading IMU sensor data (Accelerometer/Gyroscope), motor RPM, and steering inputs.
 * **Reliable Communication:** Establishing a wireless UART link between the rover and the base station.
-* **Data Integrity:** Implementing a custom communication protocol with **Checksum validation** to handle packet loss and corruption.
-* **Real-Time Monitoring:** Visualizing vehicle dynamics in **MATLAB/Simulink**.
+* **Data Integrity:** Implementing a custom communication protocol with **Checksum validation** to ensure data integrity and filter out corrupted packets.
+* **Real-Time Monitoring:** Visualizing acquired data in **MATLAB/Simulink**.
 
 ## System Architecture
 
@@ -21,17 +21,16 @@ The project focuses on designing and testing a robust **real-time telemetry syst
     * **Teensy 4.0:** Main microcontroller processing sensor data.
     * **Sensors:** IMU (Acc/Gyro), Hall Effect Sensors (RPM).
     * **Transmitter:** UART Wireless Module.
-* **Ground Station (RX):**
-    * **Arduino Mega:** Acts as the receiver bridge.
-    * **PC:** Running MATLAB/Simulink for processing.
+* **Rover Unit (RX):**
+    * **Arduino Mega:** Acts as the receiver bridge where MATLAB/Simulink runs for processing.
 
 ### 2. Communication Protocol
 To ensure robustness against noise and transmission errors, a custom binary packet structure was designed:
-| Start Byte | Payload (Sensors & Controls) | Checksum |
-| :---: | :---: | :---: |
-| `0xFF` | 16 bytes (Int16 array) | XOR Checksum |
+| Header | Payload (Sensors & Controls) | Checksum | Footer |
+| :---: | :---: | :---: |:---:|
+| 2 bytes | 26 bytes (Int16 array) | XOR or CRC Checksum | 2 bytes |
 
-* **Payload Data:** Acceleration (X,Y,Z), Angular Velocity (X,Y,Z), Throttle, Steering.
+* **Payload Data:** Acceleration (X,Y,Z), Angular Velocity (X,Y,Z), Gyroscope (X,Y,Z), Throttle, Steering.
 * **Error Handling:** A custom Simulink S-Function computes and verifies the checksum. Corrupted packets are automatically discarded to prevent control glitches.
 
 ## Technologies Used
